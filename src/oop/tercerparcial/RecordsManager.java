@@ -1,11 +1,10 @@
 package oop.tercerparcial;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class RecordsManager {
     private final File recordsFile;
@@ -27,7 +26,7 @@ public class RecordsManager {
 
             FileWriter fw = new FileWriter(recordsFile, true);
 
-            fw.append(String.valueOf(record.getScore())).append(",").append(record.getPlayerName());
+            fw.append(String.valueOf(record.getScore())).append(",").append(record.getPlayerName()).append("\n");
 
             fw.flush();
             fw.close();
@@ -37,13 +36,22 @@ public class RecordsManager {
     }
 
     public List<GameRecord> list() throws IOException {
-        List<GameRecord> records = null;
-        List<String> lines = Files.readAllLines(Paths.get(recordsFile.getAbsolutePath()));
-        Iterator<String> linesIterator = lines.iterator();
-        while (linesIterator.hasNext()) {
-            System.out.println("lines: " + lines);
-            linesIterator.next();
+        List<GameRecord> records = new ArrayList<>();
+
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(recordsFile.getAbsolutePath()))) {
+            String line;
+            line = br.readLine();
+
+            while (line != null) {
+                String[] attributes = line.split(",");
+                line = br.readLine();
+                GameRecord record = new GameRecord(Integer.parseInt(attributes[0]),attributes[1]);
+                records.add(record);
+            }
+        }catch (IOException ex) {
+            ex.printStackTrace();
         }
+
         return records;
     }
 }
