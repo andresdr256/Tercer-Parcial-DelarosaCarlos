@@ -1,4 +1,4 @@
 package oop.tercerparcial;
 
-public class InvalidPlayerNameException extends Throwable {
+public class InvalidPlayerNameException extends RuntimeException {
 }

@@ -1,4 +1,4 @@
 package oop.tercerparcial;
 
-public class NegativeScoreException extends Throwable {
+public class NegativeScoreException extends RuntimeException {
 }
