@@ -3,6 +3,7 @@ package oop.tercerparcial;
 public class GameRecord {
     private String playerName;
     private int score;
+    private String toString;
 
     public GameRecord() {
     }
@@ -26,5 +27,22 @@ public class GameRecord {
 
     public String getPlayerName() {
         return this.playerName;
+    }
+
+    public String toString() {
+        return (getScore()+","+getPlayerName());
+    }
+
+    public boolean equals (Object obj) {
+
+        if (obj instanceof GameRecord) {
+
+            GameRecord tmpGameRecord = (GameRecord) obj;
+
+            return (String.valueOf(this.score)).equals(String.valueOf(tmpGameRecord.score))
+                    && this.playerName.equals(tmpGameRecord.playerName);
+        }
+        else
+            return false;
     }
 }
