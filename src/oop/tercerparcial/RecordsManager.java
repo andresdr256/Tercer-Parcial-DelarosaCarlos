@@ -14,7 +14,6 @@ public class RecordsManager {
     }
 
     public void save(GameRecord record) {
-        FileWriter fw = null;
 
         if (record.getScore() <= 0)
             throw new NegativeScoreException();
@@ -25,21 +24,10 @@ public class RecordsManager {
         if (record.getPlayerName().length() < 1)
             throw new InvalidPlayerNameException();
 
-        try {
-            fw = new FileWriter(recordsFile, true);
-
+        try(FileWriter fw = new FileWriter(recordsFile, true)) {
             fw.append(String.valueOf(record.getScore())).append(",").append(record.getPlayerName()).append("\n");
-
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            try {
-                fw.flush();
-                fw.close();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -60,12 +48,7 @@ public class RecordsManager {
             ex.printStackTrace();
         }
 
-        records.sort(new Comparator<GameRecord>() {
-            @Override
-            public int compare(GameRecord p1, GameRecord p2) {
-                return Integer.compare(p2.getScore(), p1.getScore());
-            }
-        });
+        records.sort((p1, p2) -> Integer.compare(p2.getScore(), p1.getScore()));
 
         return records;
     }
